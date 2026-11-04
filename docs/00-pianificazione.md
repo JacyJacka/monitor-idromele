@@ -27,14 +27,14 @@ Il progetto è anche un esercizio pratico per imparare a usare agenti e skill ne
 | # | Fase | Contenuto | Stato |
 |---|------|-----------|-------|
 | 0 | Regole di fermentazione | Cosa significa "finita", quali avvisi servono | ✅ Chiusa (`01-fase0-regole.md`) |
-| A | Architettura | Linguaggio, comunicazione col sensore, processi, moduli, configurazione | 🟡 In discussione |
-| 1 | Formato dati iSpindel | Il pacchetto JSON inviato dal sensore come "contratto" comune a simulatore e sensore vero | ⬜ |
+| A | Architettura | Linguaggio, microservizi, MQTT, archivio, configurazione | ✅ Chiusa (`02-architettura.md`) |
+| 1 | Formato dati | Messaggi MQTT dell'iSpindel e degli avvisi come "contratto" comune a tutti i servizi (libreria `comune`) | ⬜ |
 | 2 | Simulatore | Fermentazioni realistiche in vari scenari, anche in versione accelerata | ⬜ |
-| 3 | Ricevitore e archivio | Server che accoglie le letture e le salva (SQLite) | ⬜ |
-| 4 | Analisi | Filtraggio del rumore, tendenza, verifica delle regole della fase 0 | ⬜ |
-| 5 | Notifiche Telegram | Bot e messaggi, con modalità di prova senza invio | ⬜ |
+| 3 | Ricevitore e archivio | Servizio che riceve le letture dal broker e le salva (SQLite) | ⬜ |
+| 4 | Analizzatore | Mediane orarie, regressione robusta, test di equivalenza, avvisi senza ripetizioni | ⬜ |
+| 5 | Notificatore Telegram | Bot e messaggi, con modalità di prova senza invio | ⬜ |
 | 6 | Test | Ogni scenario produce l'avviso giusto, nessun falso allarme | ⬜ |
-| 7 | Installazione su Raspberry Pi | Servizio che parte da solo all'accensione | ⬜ |
+| 7 | Installazione su Raspberry Pi | Docker Compose con broker e servizi, avvio automatico | ⬜ |
 | 8 | Arrivo dell'hardware | Costruzione e calibrazione dell'iSpindel, collegamento al posto del simulatore | ⬜ |
 | — | Extra | Pagina con il grafico della fermentazione; inserimento manuale delle misure in secondaria | ⬜ |
 
