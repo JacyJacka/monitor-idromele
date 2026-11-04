@@ -28,7 +28,7 @@ Il progetto è anche un esercizio pratico per imparare a usare agenti e skill ne
 |---|------|-----------|-------|
 | 0 | Regole di fermentazione | Cosa significa "finita", quali avvisi servono | ✅ Chiusa (`01-fase0-regole.md`) |
 | A | Architettura | Linguaggio, microservizi, MQTT, archivio, configurazione | ✅ Chiusa (`02-architettura.md`) |
-| 1 | Formato dati | Messaggi MQTT dell'iSpindel e degli avvisi come "contratto" comune a tutti i servizi (libreria `comune`) | ⬜ |
+| 1 | Formato dati | JSON dell'iSpindel, letture e avvisi come "contratto" comune a tutti i servizi (libreria `comune`) | 🟡 In corso (`03-fase1-formato-dati.md`) |
 | 2 | Simulatore | Fermentazioni realistiche in vari scenari, anche in versione accelerata | ⬜ |
 | 3 | Ricevitore e archivio | Servizio che riceve le letture dal broker e le salva (SQLite) | ⬜ |
 | 4 | Analizzatore | Mediane orarie, regressione robusta, test di equivalenza, avvisi senza ripetizioni | ⬜ |

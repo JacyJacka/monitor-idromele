@@ -9,7 +9,7 @@ Stato: ✅ chiusa
 | Linguaggio | Python |
 | Struttura | Microservizi: un servizio per responsabilità, ognuno nella sua cartella con le sue dipendenze |
 | Repository | Unico repository (monorepo) con una cartella per servizio |
-| Comunicazione | MQTT tramite broker (Mosquitto) |
+| Comunicazione | Ibrida: HTTP con JSON tra sensore e ricevitore, MQTT tramite broker (Mosquitto) tra i servizi |
 | Archivio | Database SQLite posseduto dal ricevitore; l'analizzatore lo legge soltanto |
 | Contratto comune | Libreria condivisa `comune` con i formati di letture e avvisi |
 | Esecuzione su Raspberry Pi | Docker Compose: un container per servizio, broker incluso |
@@ -18,26 +18,35 @@ Stato: ✅ chiusa
 ## Flusso dei dati
 
 ```
-simulatore / iSpindel ──MQTT──► broker ──MQTT──► ricevitore ──► database
-                                                                  │
-                                                         (legge ogni 15 min)
-                                                                  ▼
-            Telegram ◄── notificatore ◄──MQTT── broker ◄──MQTT── analizzatore
+simulatore / iSpindel ──HTTP (JSON)──► ricevitore ──► database
+                                           │                │
+                                           │       (legge ogni 15 min)
+                                     MQTT  │                ▼
+                          idromele/letture ▼           analizzatore
+                                        broker ◄──MQTT──────┘
+                                           │     idromele/avvisi
+                                      MQTT ▼
+                Telegram ◄──────── notificatore
 ```
 
-Nessun servizio parla direttamente con un altro: tutti pubblicano sul broker o leggono dal broker. Il simulatore e l'iSpindel vero sono intercambiabili perché pubblicano lo stesso formato sugli stessi argomenti.
+Il sensore invia ogni lettura al ricevitore con una richiesta HTTP, in un unico messaggio JSON con tutti i valori. Il simulatore fa esattamente lo stesso, quindi i due sono intercambiabili.
+
+Tra i servizi, invece, nessuno parla direttamente con un altro: tutti pubblicano sul broker o leggono dal broker.
+
+**Piano B**: se l'HTTP dovesse dare problemi con il sensore reale, si passa a MQTT anche per il sensore, con i valori pubblicati su argomenti separati (`ispindel/<nome>/<campo>`) e ricomposti dal ricevitore in un'unica lettura.
 
 ## Servizi
 
 ### simulatore
-- Imita l'iSpindel e pubblica letture sul broker, nello stesso formato del sensore vero.
+- Imita l'iSpindel e invia letture al ricevitore via HTTP, nello stesso formato JSON del sensore vero.
 - Genera fermentazioni realistiche in vari scenari (normale, lenta, bloccata, rumorosa, sensore che smette di trasmettere), anche in versione accelerata.
 - Verrà spento quando arriva l'hardware.
 
 ### ricevitore
-- È iscritto agli argomenti dell'iSpindel sul broker.
+- È un piccolo server web che accoglie le richieste HTTP dell'iSpindel.
 - Valida le letture e le salva nel database, associandole alla cotta in corso.
 - È l'unico servizio che scrive le letture nel database.
+- Dopo il salvataggio, ripubblica la lettura su `idromele/letture`, così altri servizi (come la futura dashboard) possono riceverla in diretta.
 
 ### analizzatore
 - Ogni **15 minuti** legge dal database le letture della cotta in corso.
@@ -63,10 +72,10 @@ Nessun servizio parla direttamente con un altro: tutti pubblicano sul broker o l
 
 | Argomento | Chi pubblica | Chi legge | Contenuto |
 |-----------|--------------|-----------|-----------|
-| `ispindel/<nome>/<campo>` | iSpindel / simulatore | ricevitore | Un valore per argomento (gravità, temperatura, batteria…) |
+| `idromele/letture` | ricevitore | dashboard (futura), chiunque interessato | Una lettura salvata, in formato JSON |
 | `idromele/avvisi` | analizzatore | notificatore | Un avviso in formato JSON |
 
-Il formato esatto dei messaggi dell'iSpindel si definisce nella fase 1.
+I formati dei messaggi sono definiti in `03-fase1-formato-dati.md`.
 
 ## Struttura del repository (proposta)
 
@@ -91,6 +100,5 @@ monitor-idromele/
 
 ## Da definire nelle fasi successive
 
-- **Formato dei messaggi** dell'iSpindel e degli avvisi (fase 1).
 - **Gestione delle cotte**: come si avvia una nuova cotta con i suoi parametri (nome, OG, FG attesa) e quale servizio se ne occupa.
 - **Versione di Python** e strumenti di gestione delle dipendenze.
