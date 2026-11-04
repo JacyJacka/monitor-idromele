@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Configurazione locale con dati sensibili (token Telegram)
+config.toml
+
+# Database e dati locali
+*.db
+*.sqlite3
+
+# Editor e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
