@@ -14,6 +14,8 @@ Stato: ✅ chiusa
 | Contratto comune | Libreria condivisa `comune` con i formati di letture, avvisi e comandi |
 | Esecuzione su Raspberry Pi | Docker Compose: un container per servizio, broker incluso |
 | Configurazione | File TOML locale escluso da git; nel repository solo un file di esempio |
+| Versione di Python | 3.13, uguale sul PC di sviluppo e nei container |
+| Dipendenze | uv, sia sul PC sia nei `Dockerfile` dei servizi; un unico workspace uv con la libreria `comune` condivisa |
 
 ## Flusso dei dati
 
@@ -114,6 +116,11 @@ monitor-idromele/
 - Il database SQLite è condiviso tra i container tramite un volume Docker; si usa la modalità WAL, così i servizi possono leggere mentre un altro scrive. Ogni servizio scrive solo nelle proprie tabelle.
 - Il token del bot Telegram vive solo nel file di configurazione locale (`config.toml`), escluso da git.
 
-## Da definire nelle fasi successive
+## Ruoli di Docker Compose e uv
 
-- **Versione di Python** e strumenti di gestione delle dipendenze.
+I due strumenti lavorano a livelli diversi e servono entrambi:
+
+- **Docker Compose** decide *come girano i servizi*: un container per servizio più il broker, avviati insieme e riavviati automaticamente.
+- **uv** decide *come si installano le librerie Python*: dentro ogni container (nel `Dockerfile`) e sul PC per sviluppare e lanciare i test senza costruire i container.
+
+uv registra le versioni esatte delle librerie (file `uv.lock`), così l'ambiente è identico sul PC e sul Raspberry Pi.
