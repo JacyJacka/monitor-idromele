@@ -39,6 +39,14 @@ Il progetto è anche un esercizio pratico per imparare a usare agenti e skill ne
 | 9 | Arrivo dell'hardware | Costruzione e calibrazione dell'iSpindel, collegamento al posto del simulatore | ⬜ |
 | — | Extra | Pagina con il grafico della fermentazione; inserimento manuale delle misure in secondaria | ⬜ |
 
+## Prossimi passi
+
+1. **Libreria `comune`**: formati di letture, avvisi e comandi, validazione con intervalli configurabili, calcolo della gradazione alcolica. Si parte in modalità plan.
+2. Impostare il **workspace uv** (Python 3.13) con la libreria `comune`.
+3. **Fase 2, simulatore**.
+
+Per riprendere il lavoro in una nuova sessione si usa la skill **`riprendi-progetto`** (`.claude/skills/riprendi-progetto/`), ad esempio con `/riprendi-progetto`: ricostruisce lo stato del repository e dei documenti e propone da dove ripartire.
+
 ## Riferimenti
 
 - **MeadMonitor** (`Progetti\MeadMonitor`): tentativo precedente dell'utente, scritto a mano, con codice utile (collector, lettore dati con simulatore, dashboard). Resta separato; da consultare in una fase più avanzata.

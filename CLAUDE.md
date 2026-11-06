@@ -11,6 +11,7 @@ Documentazione, messaggi di commit e comunicazione con l'utente in **italiano**.
 - Il codice lo scrive Claude, l'utente lo rivede.
 - Le decisioni di dominio (regole di fermentazione, preferenze) e di architettura si prendono **insieme all'utente**, proponendo sempre un default. I dettagli minuti li decide Claude.
 - Ogni decisione presa si annota nel documento della fase corrispondente in `docs/`, e lo stato delle fasi si aggiorna in `docs/00-pianificazione.md`.
+- Alla fine di ogni blocco di lavoro, aggiorna la sezione **"Prossimi passi"** di `docs/00-pianificazione.md`, così una nuova sessione può ripartire con la skill `riprendi-progetto`.
 - Ogni fase di sviluppo del codice inizia in **modalità plan**: prima si presenta struttura e funzioni, poi si scrive il codice dopo l'approvazione.
 
 ## Git e revisione
