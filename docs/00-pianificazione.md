@@ -41,9 +41,11 @@ Il progetto è anche un esercizio pratico per imparare a usare agenti e skill ne
 
 ## Prossimi passi
 
-1. **Libreria `comune`**: formati di letture, avvisi e comandi, validazione con intervalli configurabili, calcolo della gradazione alcolica. Si parte in modalità plan.
-2. Impostare il **workspace uv** (Python 3.13) con la libreria `comune`.
+1. Impostare il **workspace uv** (Python 3.13), con lo scheletro vuoto della libreria `comune`. Viene prima della libreria perché `comune` vive dentro il workspace e i suoi test girano con uv.
+2. **Libreria `comune`**: formati di letture, avvisi e comandi, validazione con intervalli configurabili, calcolo della gradazione alcolica. Si parte in modalità plan.
 3. **Fase 2, simulatore**.
+
+Si consiglia di proseguire con **Claude Code** (ad esempio in VS Code) aperto nella cartella del progetto: lì può eseguire `git` e `uv`, e l'hook di conferma prima del push è attivo.
 
 Per riprendere il lavoro in una nuova sessione si usa la skill **`riprendi-progetto`** (`.claude/skills/riprendi-progetto/`), ad esempio con `/riprendi-progetto`: ricostruisce lo stato del repository e dei documenti e propone da dove ripartire.
 
